@@ -53,9 +53,11 @@ public class readFileExcel {
 		pG2.printMatrix();
 		// 得到度向量
 		pG2.dVector();
-		// 选出初设节点
+		// 选出初始节点
 		initalNode = pG2.maxValue(unsignedNetExcel.dVector);
 		System.out.println(initalNode);
+		// 选出初始社区
+		pG2.initalCom(initalNode, matrix); 
 	}
 
 }
