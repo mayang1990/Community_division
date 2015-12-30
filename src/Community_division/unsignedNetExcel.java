@@ -17,7 +17,7 @@ public class unsignedNetExcel {
 
 	static int dVector[]; // 度向量
 	static float[] memDegree;// 隶属度
-	float f1 = 2;
+	float f1 = 1;
 
 	/**
 	 * 处理无符号网络
@@ -61,12 +61,13 @@ public class unsignedNetExcel {
 	}
 
 	/**
-	 * 计算度度向量
+	 * 计算度向量
 	 */
 	public void dVector() {
 		dVector = new int[LEN];
 		for (int i = 1; i < LEN; i++) {
 			dVector[i] = cal_k(i);
+			// System.out.println(dVector[i]);
 		}
 
 	}
@@ -96,6 +97,7 @@ public class unsignedNetExcel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void initalCom(int k, int[][] array) {
+		Community.get(k).add(k);
 		for (int i = 0; i < Community.size(); i++) {
 			if (array[k][i] == 1) {
 				Community.get(k).add(i);// 直接把節點加入第k個社區，應該不會重疊吧。
@@ -110,23 +112,25 @@ public class unsignedNetExcel {
 	}
 
 	/**
-	 * 求社区k中每一个节点的隶属度
+	 * 求社區k1中的每一個节点node和初始社区k的隶属度
 	 * 
 	 * @param k
 	 * @param array
 	 */
-	public void memberDegree(int k, int[][] array) {
+	public void memberDegree(int k1, int k, int[][] array) {
 		float d = 0;
-		memDegree = new float[Community.get(k).size()];
-		for (int i = 0; i < Community.get(k).size(); i++) {
+		memDegree = new float[Community.get(k1).size()];
+		for (int i = 0; i < Community.get(k1).size(); i++) {
+			d = 0;
 			for (int j = 0; j < Community.get(k).size(); j++) {
-
-				if (array[i][j] == 1) {
+				if (array[(Integer) Community.get(k1).get(i)][(Integer) Community
+						.get(k).get(j)] == 1) {
 					d++;
 				}
 			}
-			memDegree[i] = d / cal_k(k);
-			System.out.printf("%d %f\n", Community.get(k).get(i), memDegree[i]);
+			memDegree[i] = d / cal_k((Integer) Community.get(k1).get(i));
+			System.out.printf("%d %f %d %f\n", Community.get(k).get(i), d,
+					cal_k((Integer) Community.get(k1).get(i)), memDegree[i]);
 		}
 	}
 
@@ -164,4 +168,5 @@ public class unsignedNetExcel {
 
 	@SuppressWarnings("rawtypes")
 	List<List> Community = new ArrayList<List>();
+	// List<Integer> list = new ArrayList<Integer>();
 }

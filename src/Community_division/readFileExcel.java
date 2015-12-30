@@ -60,7 +60,7 @@ public class readFileExcel {
 		// 选出初始社区
 		pG2.initalCom(initalNode, matrix);
 		// 计算出初始社区中每一个节点的隶属度，并且存储在数组memDegree中
-		pG2.memberDegree(initalNode, matrix);
+		pG2.memberDegree(initalNode, initalNode, matrix);
 		// 处理初始社区
 		pG2.initalCom_f1(initalNode, unsignedNetExcel.memDegree);
 	}
