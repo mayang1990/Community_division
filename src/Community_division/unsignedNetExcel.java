@@ -192,6 +192,28 @@ public class unsignedNetExcel {
 
 	}
 
+	/**
+	 * 对扩展社区进行初始阈值f2判断,的到最终的初始社区
+	 * 
+	 * @param init
+	 * @param memDegree2
+	 */
+	@SuppressWarnings("unchecked")
+	public void extendCom_f2(int init, float[] memDegree2) {
+		for (int i = 1; i < memDegree2.length; i++) {
+			if (!Community.get(init).contains(i) && memDegree2[i] > f2) {
+				Community.get(init).add(i);
+			}
+		}
+		// 输出结果
+		for (int i = 0; i < Community.size(); i++) {
+			if (!Community.get(i).isEmpty() && !Community.get(i).contains(null)) {
+				System.out.println(Community.get(i));
+			}
+		}
+
+	}
+
 	@SuppressWarnings("rawtypes")
 	List<List> Community = new ArrayList<List>();
 
