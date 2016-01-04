@@ -52,6 +52,8 @@ public class readFileExcel {
 
 		// 打印图
 		pG2.printMatrix();
+		//得到初始模块度增量矩阵
+		pG2.qMatrix();
 		// 得到度向量
 		pG2.dVector();
 		// 选出初始节点
@@ -63,6 +65,7 @@ public class readFileExcel {
 		pG2.memberDegree(initalNode, initalNode, matrix);
 		// 处理初始社区
 
+		
 		pG2.extendCom(initalNode, initalNode, matrix);
 		for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
 			System.out.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
