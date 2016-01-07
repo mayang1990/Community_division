@@ -35,6 +35,7 @@ public class unsignedNetExcel {
 
 		for (int i = 0; i < readFileformExcel.matrix.length; i++) {
 			Community.add(i, new ArrayList<Integer>());
+			Community.get(i).add(i);
 			Result.add(i, new ArrayList<Integer>());
 		}
 		memDegree = new float[Community.size()];
@@ -203,7 +204,6 @@ public class unsignedNetExcel {
 	 */
 	@SuppressWarnings("unchecked")
 	public void neighourCom(int com, int init, int[][] array) {
-		Community.get(com).add(com);
 		for (int i = 0; i < Community.size(); i++) {
 			if (array[com][i] == 1 && !Community.get(init).contains(i)) {
 				Community.get(com).add(i);// 直接把節點加入第k個社區，應該不會重疊吧。
@@ -341,11 +341,18 @@ public class unsignedNetExcel {
 			}
 		}
 
-		// 清除掉无用的邻居的节点和清空隶属度数组。
+		// 清除掉已经划分完社区的节点
+		for (int i = 0; i < Community.get(init).size(); i++) {
+			if ((Integer) Community.get(init).get(i) != init) {
+				Community.get((Integer) Community.get(init).get(i)).clear();
+			}
+		}
+
+		// 清空隶属度数组。
 		for (int i = 1; i < memDegree2.length; i++) {
 			if (i != init) {
-				Community.get(i).clear();
 				memDegree2[i] = 0;
+
 			}
 		}
 		Result.addAll(Community);
