@@ -21,8 +21,7 @@ public class unsignedNetExcel {
 	float f2 = (float) 1.0 / 2;
 
 	float Q;// 模塊度
-	int totalNum = 0, pNum = 0;// 矩阵中的边数，正边数负边数。
-	float pRatio;// 矩阵中正边和负边分别占得比例。
+	int pNum = 0;// 矩阵中的边数。
 	float pVector[];
 
 	/**
@@ -34,7 +33,7 @@ public class unsignedNetExcel {
 		mMatrix = array;
 		LEN = mMatrix.length;
 
-		for (int i = 0; i < readFileExcel.matrix.length; i++) {
+		for (int i = 0; i < readFileformExcel.matrix.length; i++) {
 			Community.add(i, new ArrayList<Integer>());
 			Result.add(i, new ArrayList<Integer>());
 		}
@@ -57,7 +56,7 @@ public class unsignedNetExcel {
 	 * 打印初始模块度增量矩阵
 	 */
 	public void printqMatris() {
-		System.out.printf("\nsigned Q:\n");
+		System.out.printf("\nQ增量 Martix Graph:\n");
 		for (int i = 0; i < LEN; i++) {
 			for (int j = 0; j < LEN; j++)
 				System.out.printf("%10f", qMatrix[i][j]);
@@ -68,7 +67,8 @@ public class unsignedNetExcel {
 	/**
 	 * 计算节点正强度
 	 * 
-	 * @param i 節點
+	 * @param i
+	 *            節點
 	 * @return
 	 */
 	public int pStrength(int i) {
@@ -107,7 +107,7 @@ public class unsignedNetExcel {
 		}
 		return index;
 	}
-	
+
 	/**
 	 * 计算模块度矩阵。
 	 */
@@ -124,10 +124,7 @@ public class unsignedNetExcel {
 				}
 			}
 		}
-		totalNum = pNum;
-		pRatio = (float) pNum / totalNum;
 		System.out.printf("%d", pNum);
-		System.out.printf(" %f", pRatio);
 
 		// 得到正强度数组和负强度数组。
 		for (int i = 0; i < LEN; i++) {
@@ -144,10 +141,7 @@ public class unsignedNetExcel {
 		for (int i = 0; i < LEN; i++) {
 			for (int j = 0; j < LEN; j++) {
 				if (mMatrix[i][j] == 1) {
-					qMatrix[i][j] = pRatio
-							* ((float) 1 / pNum - pVector[i] * pVector[j]);
-				} else if (mMatrix[i][j] == -1) {
-					qMatrix[i][j] = -pRatio * pVector[i] * pVector[j];
+					qMatrix[i][j] = (float) 1 / pNum - pVector[i] * pVector[j];
 				}
 			}
 		}
@@ -160,9 +154,12 @@ public class unsignedNetExcel {
 	/**
 	 * 更新模块度增量矩阵。
 	 * 
-	 * @param array 矩阵
-	 * @param cow 横坐标
-	 * @param col 纵坐标
+	 * @param array
+	 *            矩阵
+	 * @param cow
+	 *            横坐标
+	 * @param col
+	 *            纵坐标
 	 */
 	public void reqMatrix(float[][] array, int cow, int col) {
 		for (int k = 0; k < array.length; k++) {
@@ -173,13 +170,11 @@ public class unsignedNetExcel {
 
 			} else if (array[cow][k] == 0 && array[col][k] != 0 && k != cow
 					&& k != col) {
-				array[col][k] = array[col][k] - 2
-						* (pRatio * pVector[cow] * pVector[k]);
+				array[col][k] = array[col][k] - 2 * (pVector[cow] * pVector[k]);
 
 			} else if (array[cow][k] != 0 && array[col][k] == 0 && k != cow
 					&& k != col) {
-				array[col][k] = array[cow][k] - 2
-						* (pRatio * pVector[col] * pVector[k]);
+				array[col][k] = array[cow][k] - 2 * (pVector[col] * pVector[k]);
 
 			}
 			array[k][col] = array[col][k];
@@ -200,8 +195,10 @@ public class unsignedNetExcel {
 	/**
 	 * 得到初始社团init,社团内的节点的邻居节点集合
 	 * 
-	 * @param com 节点
-	 * @param init 初始社团
+	 * @param com
+	 *            节点
+	 * @param init
+	 *            初始社团
 	 * @param array
 	 */
 	@SuppressWarnings("unchecked")
@@ -223,8 +220,10 @@ public class unsignedNetExcel {
 	/**
 	 * 求社區com中的每一個节点和初始社区init的隶属度
 	 * 
-	 * @param com 社区
-	 * @param init 初始社区
+	 * @param com
+	 *            社区
+	 * @param init
+	 *            初始社区
 	 * @param array
 	 */
 	public void memberDegree(int com, int init, int[][] array) {
@@ -251,8 +250,10 @@ public class unsignedNetExcel {
 	/**
 	 * 对社区com进行初始阈值f1判断,得到最终的初始社区,并且计算合并初始社区的模块度增量
 	 * 
-	 * @param com 社区
-	 * @param memDegree1 隶属度数组
+	 * @param com
+	 *            社区
+	 * @param memDegree1
+	 *            隶属度数组
 	 */
 	@SuppressWarnings("unchecked")
 	public void initalCom_f1(int com, float[] memDegree1) {
@@ -281,7 +282,7 @@ public class unsignedNetExcel {
 				// System.out.println(Community.get(i));
 			}
 		}
-		
+
 		// 计算合并社区的模块度增量
 		for (int i = 0; i < Community.get(com).size(); i++) {
 			if ((Integer) Community.get(com).get(i) != com) {
@@ -294,19 +295,21 @@ public class unsignedNetExcel {
 	/**
 	 * 扩展社区，求初始社区中的每一个节点的邻居和每一个邻居和初始社区之间的隶属度
 	 * 
-	 * @param extend 扩展社区
-	 * @param init 初始社区
+	 * @param extend
+	 *            扩展社区
+	 * @param init
+	 *            初始社区
 	 * @param array
 	 */
 	public void extendCom(int extend, int init, int[][] array) {
 
 		if (Community.get(extend).size() > 1) {
 			for (int i = 1; i < Community.get(extend).size(); i++) {
-				
+
 				// 计算初始社区中每一个节点的邻居节点
 				neighourCom((Integer) Community.get(extend).get(i), init, array);
-				
-				//计算扩展社区中的每一个节点的隶属度
+
+				// 计算扩展社区中的每一个节点的隶属度
 				memberDegree((Integer) Community.get(extend).get(i), init,
 						array);
 
@@ -318,17 +321,26 @@ public class unsignedNetExcel {
 	/**
 	 * 对扩展社区进行初始阈值f2判断,得到最终的扩展社区
 	 * 
-	 * @param init 初始社区
-	 * @param memDegree2 隶属度数组
+	 * @param init
+	 *            初始社区
+	 * @param memDegree2
+	 *            隶属度数组
 	 */
 	@SuppressWarnings("unchecked")
 	public void extendCom_f2(int init, float[] memDegree2) {
 		for (int i = 1; i < memDegree2.length; i++) {
 			if (!Community.get(init).contains(i) && memDegree2[i] > f2) {
-				Community.get(init).add(i);
+				printqMatris();
+
+				// 判断模块度增量是否大于0
+				if (qMatrix[i][init] > 0) {
+					Community.get(init).add(i);
+					reqMatrix(qMatrix, i, init);
+					printqMatris();
+				}
 			}
 		}
-		
+
 		// 清除掉无用的邻居的节点和清空隶属度数组。
 		for (int i = 1; i < memDegree2.length; i++) {
 			if (i != init) {
@@ -337,7 +349,7 @@ public class unsignedNetExcel {
 			}
 		}
 		Result.addAll(Community);
-		
+
 		// 输出结果
 		for (int i = 0; i < Result.size(); i++) {
 			if (!Result.get(i).isEmpty() && !Result.get(i).contains(null)) {
@@ -345,7 +357,7 @@ public class unsignedNetExcel {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	List<List> Community = new ArrayList<List>();
 	@SuppressWarnings("rawtypes")

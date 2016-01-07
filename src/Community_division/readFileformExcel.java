@@ -10,11 +10,11 @@ import jxl.*;
  * 
  */
 
-public class readFileExcel {
+public class readFileformExcel {
 
 	static int[][] matrix = null;
 
-	public readFileExcel() {
+	public readFileformExcel() {
 
 		try {
 			Workbook book = Workbook.getWorkbook(new File("kong.xls"));
@@ -46,7 +46,7 @@ public class readFileExcel {
 		int initalNode = 0;
 
 		// ¶ÁExcelÎÄ¼þ
-		readFileExcel readExcel = new readFileExcel();
+		readFileformExcel readExcel = new readFileformExcel();
 		unsignedNetExcel pG2 = new unsignedNetExcel(matrix);
 		// Community resultCom = new Community();
 
