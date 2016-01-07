@@ -52,32 +52,51 @@ public class readFileformExcel {
 
 		// 打印图
 		pG2.printMatrix();
-		//得到初始模块度增量矩阵
+		// 得到初始模块度增量矩阵
 		pG2.qMatrix();
 		// 得到度向量
 		pG2.dVector();
 		// 选出初始节点
 		initalNode = pG2.maxValue(unsignedNetExcel.dVector);
-		System.out.println(initalNode);
-		// 选出初始社区
-		pG2.neighourCom(initalNode, initalNode, matrix);
-		// 计算出初始社区中每一个节点的隶属度，并且存储在数组memDegree中
-		pG2.memberDegree(initalNode, initalNode, matrix);
-		// 处理初始社区
-		pG2.initalCom_f1(initalNode,unsignedNetExcel.memDegree);
-		for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
-			System.out.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
-		}
-		pG2.extendCom(initalNode, initalNode, matrix);
-		for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
-			System.out.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
-		}
 
-		pG2.extendCom_f2(initalNode, unsignedNetExcel.memDegree);
-		
-		for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
-			System.out.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
+		while (initalNode > 0) {
+			unsignedNetExcel.dVector[initalNode] = 0;
+			System.out.printf("\n");
+			System.out.println(initalNode);
+			// 选出初始社区
+			pG2.neighourCom(initalNode, initalNode, matrix);
+			// 计算出初始社区中每一个节点的隶属度，并且存储在数组memDegree中
+			pG2.memberDegree(initalNode, initalNode, matrix);
+			// 处理初始社区
+			pG2.initalCom_f1(initalNode, unsignedNetExcel.memDegree);
+			for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
+				System.out
+						.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
+			}
+			// 选出扩展社区
+			pG2.extendCom(initalNode, initalNode, matrix);
+
+			// 输出隶属度数组
+			for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
+				System.out
+						.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
+			}
+
+			// 处理扩展社区
+			pG2.extendCom_f2(initalNode, unsignedNetExcel.memDegree);
+
+			// 输出隶属度数组
+			for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
+				System.out
+						.printf("%d = %f\n", i, unsignedNetExcel.memDegree[i]);
+			}
+
+			// 重新选出初始节点
+			initalNode = pG2.maxValue(unsignedNetExcel.dVector);
+			// 输出度向量
+			for (int i = 0; i < unsignedNetExcel.dVector.length; i++) {
+				System.out.printf("%3d", unsignedNetExcel.dVector[i]);
+			}
 		}
 	}
-
 }

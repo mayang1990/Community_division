@@ -29,6 +29,7 @@ public class unsignedNetExcel {
 	 * 
 	 * @param array
 	 */
+	@SuppressWarnings("unchecked")
 	public unsignedNetExcel(int[][] array) {
 		mMatrix = array;
 		LEN = mMatrix.length;
@@ -117,7 +118,7 @@ public class unsignedNetExcel {
 		pVector = new float[LEN];
 		qMatrix = new float[LEN][LEN];
 
-		// 计算所有正边和负边的和。 pRatio為正邊所佔比例，nRatio為負邊所佔比例。
+		// 计算所有正边的和。
 		for (int i = 0; i < LEN; i++) {
 			for (int j = 0; j < LEN; j++) {
 				if (mMatrix[i][j] == 1) {
@@ -125,17 +126,14 @@ public class unsignedNetExcel {
 				}
 			}
 		}
-		System.out.printf("%d", pNum);
+		System.out.printf("正边数 = %d", pNum);
 
-		// 得到正强度数组和负强度数组。
+		// 得到正强度数组。
 		for (int i = 0; i < LEN; i++) {
 			pVector[i] = (float) pStrength(i) / pNum;
 		}
 		for (int i = 0; i < LEN; i++) {
-
-			System.out.printf("\n%d", pStrength(i));
-			System.out.printf("\n%f", pVector[i]);
-			System.out.printf("\n");
+			System.out.printf("\n正度 = %d 正强度 = %f\n", pStrength(i), pVector[i]);
 		}
 
 		// 计算初始模块度增量矩阵。
@@ -187,7 +185,7 @@ public class unsignedNetExcel {
 
 		for (int m = 0; m < mMatrix.length; m++) {
 
-			System.out.printf("pVecter[%d] = %f", m, pVector[m]);
+			System.out.printf("\npVecter[%d] = %f", m, pVector[m]);
 			System.out.printf("\n");
 		}
 
@@ -345,6 +343,7 @@ public class unsignedNetExcel {
 		for (int i = 0; i < Community.get(init).size(); i++) {
 			if ((Integer) Community.get(init).get(i) != init) {
 				Community.get((Integer) Community.get(init).get(i)).clear();
+				dVector[(Integer) Community.get(init).get(i)] = 0;
 			}
 		}
 
@@ -352,13 +351,22 @@ public class unsignedNetExcel {
 		for (int i = 1; i < memDegree2.length; i++) {
 			if (i != init) {
 				memDegree2[i] = 0;
-
 			}
 		}
-		Result.addAll(Community);
 
-		// 输出结果
-		for (int i = 0; i < Result.size(); i++) {
+		// 将结果赋值给Result。该赋值为赋值不为引用。
+		for (int i = 0; i < Community.get(init).size(); i++) {
+			Result.get(init).add(i, Community.get(init).get(i));
+		}
+		Community.get(init).clear();
+
+		// 输出Community和Result
+		for (int i = 1; i < Community.size(); i++) {
+			if (!Community.get(i).isEmpty() && !Community.get(i).contains(null)) {
+				System.out.println(Community.get(i));
+			}
+		}
+		for (int i = 1; i < Result.size(); i++) {
 			if (!Result.get(i).isEmpty() && !Result.get(i).contains(null)) {
 				System.out.println(Result.get(i));
 			}
