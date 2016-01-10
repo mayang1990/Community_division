@@ -17,8 +17,8 @@ public class unsignedNetExcel {
 
 	static int dVector[]; // 度向量
 	static float[] memDegree;// 隶属度
-	float f1 = 1;
-	float f2 = (float) 1.0 / 2;
+	float f1 = (float) 1.0 / 2;
+	float f2 = (float) 1.0 / 3;
 
 	float Q;// 模塊度
 	int pNum = 0;// 矩阵中的边数。
@@ -208,6 +208,7 @@ public class unsignedNetExcel {
 			}
 		}
 		// 输出结果
+		System.out.println("邻居社区:");
 		for (int i = 0; i < Community.size(); i++) {
 			if (!Community.get(i).isEmpty() && !Community.get(i).contains(null)) {
 				System.out.println(Community.get(i));
@@ -328,14 +329,17 @@ public class unsignedNetExcel {
 	public void extendCom_f2(int init, float[] memDegree2) {
 		for (int i = 1; i < memDegree2.length; i++) {
 			if (!Community.get(init).contains(i) && memDegree2[i] > f2) {
+				System.out.printf("节点为：%d\n", i);
 				printqMatris();
 
 				// 判断模块度增量是否大于0
 				if (qMatrix[i][init] > 0) {
 					Community.get(init).add(i);
+					System.out.println("模块度增量大于零,合并:");
 					reqMatrix(qMatrix, i, init);
 					printqMatris();
 				}
+				System.out.println("模块度增量小于零,不合并.");
 			}
 		}
 
@@ -361,11 +365,13 @@ public class unsignedNetExcel {
 		Community.get(init).clear();
 
 		// 输出Community和Result
+		System.out.println("Community:");
 		for (int i = 1; i < Community.size(); i++) {
 			if (!Community.get(i).isEmpty() && !Community.get(i).contains(null)) {
 				System.out.println(Community.get(i));
 			}
 		}
+		System.out.println("Result:");
 		for (int i = 1; i < Result.size(); i++) {
 			if (!Result.get(i).isEmpty() && !Result.get(i).contains(null)) {
 				System.out.println(Result.get(i));

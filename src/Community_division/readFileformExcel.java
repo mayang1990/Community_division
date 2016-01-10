@@ -62,7 +62,7 @@ public class readFileformExcel {
 		while (initalNode > 0) {
 			unsignedNetExcel.dVector[initalNode] = 0;
 			System.out.printf("\n");
-			System.out.println(initalNode);
+			System.out.printf("initalNode = %d\n", initalNode);
 			// 选出初始社区
 			pG2.neighourCom(initalNode, initalNode, matrix);
 			// 计算出初始社区中每一个节点的隶属度，并且存储在数组memDegree中
@@ -94,6 +94,7 @@ public class readFileformExcel {
 			// 重新选出初始节点
 			initalNode = pG2.maxValue(unsignedNetExcel.dVector);
 			// 输出度向量
+			System.out.println("dVector 数组:");
 			for (int i = 0; i < unsignedNetExcel.dVector.length; i++) {
 				System.out.printf("%3d", unsignedNetExcel.dVector[i]);
 			}
