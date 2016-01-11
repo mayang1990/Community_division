@@ -40,9 +40,8 @@ public class readFileformExcel {
 	 * 
 	 * @param args
 	 */
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "unchecked", })
 	public static void main(String[] args) {
-		float Q = 0;
 		int initalNode = 0;
 
 		// 读Excel文件
@@ -97,6 +96,37 @@ public class readFileformExcel {
 			System.out.println("dVector 数组:");
 			for (int i = 0; i < unsignedNetExcel.dVector.length; i++) {
 				System.out.printf("%3d", unsignedNetExcel.dVector[i]);
+			}
+		}
+
+		// 合并小社区并输出结果
+		while (true) {
+
+			// 合并社区得到全局模块度矩阵
+			pG2.mergeCom();
+
+			// 求合并社区后的全局模块度矩阵
+			MaxValue mMax = new MaxValue(unsignedNetExcel.QMatrix);
+			float max = mMax.getMaxValue();
+			int cow = mMax.getCow();
+			int col = mMax.getCol();
+
+			// 输出最大值和它的坐标
+			System.out.printf("%f %d %d\n", max, cow, col);
+
+			if (max > unsignedNetExcel.Q) {
+
+				// 如果应该合并社区，则合并社区
+				unsignedNetExcel.Result.get(cow).addAll(
+						unsignedNetExcel.Result.get(col));
+				unsignedNetExcel.Result.get(col).clear();
+				unsignedNetExcel.Q = max;
+			} else {
+
+				// 最后输出结果
+				System.out.printf("模块度 Q = %f\n", unsignedNetExcel.Q);
+				unsignedNetExcel.printCom(unsignedNetExcel.Result);
+				break;
 			}
 		}
 	}

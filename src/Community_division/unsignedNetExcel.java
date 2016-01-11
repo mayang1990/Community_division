@@ -13,14 +13,15 @@ public class unsignedNetExcel {
 
 	private int[][] mMatrix; // 邻接矩阵
 	static float[][] qMatrix; // 模块度增量矩阵
-	int LEN; // 矩陣的大小
+	static float[][] QMatrix; // 全局模块度矩阵
+	int LEN; // 矩阵的大小
 
 	static int dVector[]; // 度向量
 	static float[] memDegree;// 隶属度
-	float f1 = (float) 1.0 / 2;
-	float f2 = (float) 1.0 / 3;
+	float f1 = (float) 1.0 / 2; // 随便设的，根据需要调整
+	float f2 = (float) 1.0 / 3; // 随便设的，根据需要调整
 
-	float Q;// 模塊度
+	static float Q;// 模块度
 	int pNum = 0;// 矩阵中的边数。
 	float pVector[];
 
@@ -67,6 +68,20 @@ public class unsignedNetExcel {
 	}
 
 	/**
+	 * 打印Community
+	 * 
+	 * @param com
+	 */
+	@SuppressWarnings("rawtypes")
+	static public void printCom(List<List> com) {
+		for (int i = 1; i < com.size(); i++) {
+			if (!com.get(i).isEmpty() && !com.get(i).contains(null)) {
+				System.out.println(com.get(i));
+			}
+		}
+	}
+
+	/**
 	 * 计算节点正强度
 	 * 
 	 * @param i
@@ -108,6 +123,18 @@ public class unsignedNetExcel {
 			}
 		}
 		return index;
+	}
+
+	/**
+	 * 恢复Community
+	 * 
+	 * @param com
+	 */
+	@SuppressWarnings("unchecked")
+	public void recoverCom(int com) {
+		for (int i = 0; i < Result.get(com).size(); i++) {
+			Community.get(com).add(i, Result.get(com).get(i));
+		}
 	}
 
 	/**
@@ -189,6 +216,71 @@ public class unsignedNetExcel {
 			System.out.printf("\n");
 		}
 
+	}
+
+	/**
+	 * 计算整体模块度
+	 * 
+	 * @param result
+	 *            结果社区
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public float cal_Q(List<List> result) {
+		int A = 0;
+		int k = 0;
+		int M = 0;
+
+		// 打印List
+		System.out.printf("List:\n");
+		for (int i = 1; i < result.size(); i++) {
+			if (!result.get(i).isEmpty()) {
+				System.out.printf("C%d = ", i);
+				for (int j = 0; j < result.get(i).size(); j++)
+					System.out.printf("%d ", result.get(i).get(j));
+				System.out.printf("\n");
+			}
+		}
+
+		// 计算 M , M=2m
+		for (int i = 1; i < LEN; i++) {
+			for (int j = 1; j < LEN; j++) {
+				if (mMatrix[i][j] == 1)
+					M++;
+			}
+		}
+
+		// 初始化"社团关系数组"
+		for (int i = 1; i < result.size(); i++) {
+			if (!result.get(i).isEmpty()) {
+				for (int j1 = 0; j1 < result.get(i).size(); j1++) {
+					for (int j2 = j1 + 1; j2 < result.get(i).size(); j2++) {
+						// System.out.printf("%d \n", i);
+						int p = (Integer) result.get(i).get(j1);
+						int q = (Integer) result.get(i).get(j2);
+						// System.out.printf("p=%d q=%d\n", p, q);
+						if (mMatrix[p][q] == 1)
+							A = A + 2;
+
+						int k1 = pStrength(p);
+						int k2 = pStrength(q);
+						k += k1 * k2;
+					}
+				}
+			}
+		}
+
+		k = 2 * k;
+
+		float q1 = ((float) 1 / M) * A;
+		float q2 = ((float) 1 / (M * M)) * k;
+		float q = q1 - q2;
+
+		// System.out.printf("顶点数 = %d\n", LEN);
+		// System.out.printf("边数 = %d\n", M / 2);
+		// System.out.printf("模块度Q = %f\n", q);
+		return q;
 	}
 
 	/**
@@ -285,10 +377,12 @@ public class unsignedNetExcel {
 		// 计算合并社区的模块度增量
 		for (int i = 0; i < Community.get(com).size(); i++) {
 			if ((Integer) Community.get(com).get(i) != com) {
-				System.out.println(i);
+				System.out.println(Community.get(com).get(i));
 				reqMatrix(qMatrix, (Integer) Community.get(com).get(i), com);
+				printqMatris();
 			}
 		}
+
 	}
 
 	/**
@@ -362,19 +456,43 @@ public class unsignedNetExcel {
 		for (int i = 0; i < Community.get(init).size(); i++) {
 			Result.get(init).add(i, Community.get(init).get(i));
 		}
-		Community.get(init).clear();
 
 		// 输出Community和Result
 		System.out.println("Community:");
-		for (int i = 1; i < Community.size(); i++) {
-			if (!Community.get(i).isEmpty() && !Community.get(i).contains(null)) {
-				System.out.println(Community.get(i));
-			}
-		}
+		printCom(Community);
 		System.out.println("Result:");
-		for (int i = 1; i < Result.size(); i++) {
-			if (!Result.get(i).isEmpty() && !Result.get(i).contains(null)) {
-				System.out.println(Result.get(i));
+		printCom(Result);
+	}
+
+	/**
+	 * 合并社区得到全局模块度矩阵
+	 */
+	@SuppressWarnings("unchecked")
+	public void mergeCom() {
+		Q = cal_Q(Result);
+		QMatrix = new float[LEN][LEN];
+
+		for (int i = 1; i < Community.size(); i++) {
+			if (!Community.get(i).isEmpty()) {
+				for (int j = i + 1; j < Community.size(); j++) {
+					if (!Community.get(j).isEmpty()) {
+
+						// 将Ci加到Cj上
+						Community.get(j).addAll(Community.get(i));
+
+						// 清空Ci
+						Community.get(i).clear();
+
+						// 求组合的模块度
+						QMatrix[i][j] = cal_Q(Community);
+						// 清空Cj
+						Community.get(j).clear();
+
+						// 恢复Community
+						recoverCom(i);
+						recoverCom(j);
+					}
+				}
 			}
 		}
 	}
@@ -382,6 +500,6 @@ public class unsignedNetExcel {
 	@SuppressWarnings("rawtypes")
 	List<List> Community = new ArrayList<List>();
 	@SuppressWarnings("rawtypes")
-	List<List> Result = new ArrayList<List>();
+	static List<List> Result = new ArrayList<List>();
 
 }
