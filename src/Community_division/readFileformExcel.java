@@ -106,7 +106,7 @@ public class readFileformExcel {
 			pG2.mergeCom();
 
 			// 求合并社区后的全局模块度矩阵
-			MaxValue mMax = new MaxValue(unsignedNetExcel.QMatrix);
+			MaxValueforMatrix mMax = new MaxValueforMatrix(unsignedNetExcel.QMatrix);
 			float max = mMax.getMaxValue();
 			int cow = mMax.getCow();
 			int col = mMax.getCol();

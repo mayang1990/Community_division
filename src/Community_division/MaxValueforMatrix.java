@@ -6,7 +6,7 @@ package Community_division;
  * 
  */
 
-public class MaxValue {
+public class MaxValueforMatrix {
 	public float getMaxValue() {
 		return maxValue;
 	}
@@ -27,7 +27,7 @@ public class MaxValue {
 	 * 
 	 * @param array
 	 */
-	public MaxValue(float[][] array) {
+	public MaxValueforMatrix(float[][] array) {
 
 		for (int i = 0; i < array.length; i++) {
 			for (int j = i + 1; j < array.length; j++) {
