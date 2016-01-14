@@ -13,10 +13,12 @@ package org.Community_division.core;
  */
 public class Matrix {
 
-	private float maxValue = 0; // 矩阵的最大值
+	private int maxValue = 0; // 矩阵的最大值
 	private int cow, col; // 矩阵最大值最大值对应的坐标
+	private float maxValueF = 0;
+	private int cowF, colF;
 
-	public float getMaxValue() {
+	public int getMaxValue() {
 		return maxValue;
 	}
 
@@ -26,6 +28,18 @@ public class Matrix {
 
 	public int getCol() {
 		return col;
+	}
+
+	public float getMaxValueF() {
+		return maxValueF;
+	}
+
+	public int getCowF() {
+		return cowF;
+	}
+
+	public int getColF() {
+		return colF;
 	}
 
 	/**
@@ -129,7 +143,7 @@ public class Matrix {
 	 * @param matrix
 	 *            the adjacent matrix
 	 */
-	public void maxValueforMatrix(float[][] matrix) {
+	public void maxValueforMatrix(int[][] matrix) {
 
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = i + 1; j < matrix.length; j++) {
@@ -137,6 +151,25 @@ public class Matrix {
 					maxValue = matrix[i][j];
 					cow = i;
 					col = j;
+				}
+			}
+		}
+	}
+
+	/**
+	 * get the max value of the float matrix
+	 * 
+	 * @param matrix
+	 *            the float matrix
+	 */
+	public void maxValueforMatrixFloat(float[][] matrix) {
+
+		for (int i = 0; i < matrix.length; i++) {
+			for (int j = i + 1; j < matrix.length; j++) {
+				if (matrix[i][j] > maxValueF) {
+					maxValueF = matrix[i][j];
+					cowF = i;
+					colF = j;
 				}
 			}
 		}

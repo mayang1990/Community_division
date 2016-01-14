@@ -1,5 +1,7 @@
 package org.Community_division.algorithm;
 
+import java.util.List;
+
 import org.Community_division.core.Matrix;
 
 /**
@@ -18,7 +20,7 @@ public class UnsignedGlobalModularity {
 	 *            the result of the community division
 	 * @return q
 	 */
-	public float unsignedGlobalModularity(int[][] matrix, int[][] result) {
+	public float unsignedGlobalModularity(int[][] matrix, List<List> result) {
 
 		Matrix admatrix = new Matrix();
 
@@ -31,20 +33,20 @@ public class UnsignedGlobalModularity {
 
 		// 打印List
 		System.out.printf("List:\n");
-		for (int i = 0; i < result.length; i++) {
+		for (int i = 0; i < result.size(); i++) {
 			System.out.printf("C%d = ", i + 1);
-			for (int j = 0; j < result[i].length; j++)
-				System.out.printf("%d ", result[i][j]);
+			for (int j = 0; j < result.get(i).size(); j++)
+				System.out.printf("%d ", result.get(i).get(j));
 			System.out.printf("\n");
 		}
 
 		// 初始化"社团关系数组"
-		for (int i = 0; i < result.length; i++) {
-			for (int j1 = 0; j1 < result[i].length; j1++) {
-				for (int j2 = j1 + 1; j2 < result[i].length; j2++) {
+		for (int i = 0; i < result.size(); i++) {
+			for (int j1 = 0; j1 < result.get(i).size(); j1++) {
+				for (int j2 = j1 + 1; j2 < result.get(i).size(); j2++) {
 
-					int p = result[i][j1] - 1;
-					int q = result[i][j2] - 1;
+					int p = (Integer) result.get(i).get(j1);
+					int q = (Integer) result.get(i).get(j2);
 
 					if (matrix[p][q] == 1)
 						A = A + 2;

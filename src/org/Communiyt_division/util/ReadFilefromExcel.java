@@ -17,7 +17,7 @@ public class ReadFilefromExcel {
 	public ReadFilefromExcel() {
 
 		try {
-			Workbook book = Workbook.getWorkbook(new File("16nodesSigned.xls"));
+			Workbook book = Workbook.getWorkbook(new File("kong.xls"));
 			// 获得第一个工作表对象
 			Sheet sheet = book.getSheet(0);
 			matrix = new int[sheet.getRows()][sheet.getColumns()];

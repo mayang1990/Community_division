@@ -38,16 +38,16 @@ public class IncrementalOfModularityTest {
 
 		MergeCommunity com = new MergeCommunity(matrix);
 
-		IncrementalOfModularity pG = new IncrementalOfModularity();
+		IncrementalOfUnsigned pG = new IncrementalOfUnsigned();
 		qMatrix = pG.qMatrix(matrix);
 		pG.printqMatris(qMatrix);
 
 		while (true) {
 			Matrix m = new Matrix();
-			m.maxValueforMatrix(qMatrix);
-			float max = m.getMaxValue();
-			int cow = m.getCow();
-			int col = m.getCol();
+			m.maxValueforMatrixFloat(qMatrix);
+			float max = m.getMaxValueF();
+			int cow = m.getCowF();
+			int col = m.getColF();
 			System.out.printf("%f %d %d\n", max, cow, col);
 
 			if (max > 0) {
