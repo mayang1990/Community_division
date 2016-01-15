@@ -18,7 +18,7 @@ public class MatrixTest {
 	public void test() {
 		int[][] matrix = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 2, 0, 0 },
 				{ 0, 1, 0, 0 } };
-		float[][] matrix1 = { { 1, 0, 0, 0 }, { 0, 1, 2, 0 }, { 0, 2, 0, 1 },
+		int[][] matrix1 = { { 1, 0, 0, 0 }, { 0, 1, 2, 0 }, { 0, 2, 0, 1 },
 				{ 0, 1, 0, 0 } };
 		Matrix m = new Matrix();
 		System.out.println(m.edgeNum(matrix));

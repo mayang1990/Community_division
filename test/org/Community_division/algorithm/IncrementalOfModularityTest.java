@@ -26,15 +26,15 @@ public class IncrementalOfModularityTest {
 		/**
 		 * read from text
 		 */
-		// ReadFilefromText readtext = new ReadFilefromText();
-		// int[][] edges = readtext.readLine("Gahu.txt");
-		// int[][] matrix = readtext.adjMatrix(edges);
+		ReadFilefromText readtext = new ReadFilefromText();
+		int[][] edges = readtext.readLine("Gahu.txt");
+		int[][] matrix = readtext.adjMatrix(edges);
 
 		/**
 		 * read from excel
 		 */
 		ReadFilefromExcel readexcel = new ReadFilefromExcel();
-		int[][] matrix = readexcel.getMatrix();
+		//int[][] matrix = readexcel.getMatrix();
 
 		MergeCommunity com = new MergeCommunity(matrix);
 

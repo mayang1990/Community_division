@@ -2,6 +2,7 @@ package org.Community_division.algorithm;
 
 import org.Community_division.core.Matrix;
 import org.Communiyt_division.util.ReadFilefromExcel;
+import org.Communiyt_division.util.ReadFilefromText;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,12 +22,16 @@ public class CommunitydivisionTest {
 	public void test() {
 		int initalNode = 0;
 
+		ReadFilefromText readText = new ReadFilefromText();
+		int[][] edges = readText.readLine("dolphins.txt");
+		int[][] matrix = readText.adjMatrix(edges);
+
 		ReadFilefromExcel readexcel = new ReadFilefromExcel();
-		int[][] matrix = readexcel.getMatrix();
+		// int[][] matrix = readexcel.getMatrix();
 
 		CommunityDivision com = new CommunityDivision(matrix);
 		Matrix m = new Matrix();
-		m.printMatrix(matrix);
+		//m.printMatrix(matrix);
 
 		com.dVector();
 		initalNode = com.maxValue(com.dVector);
@@ -46,33 +51,33 @@ public class CommunitydivisionTest {
 			com.initalCom_f1(initalNode, com.memDegree);
 
 			// 输出隶属度数组
-			for (int i = 0; i < com.memDegree.length; i++) {
-				System.out.printf("%d = %f\n", i, com.memDegree[i]);
-			}
+			// for (int i = 0; i < com.memDegree.length; i++) {
+			// System.out.printf("%d = %f\n", i, com.memDegree[i]);
+			// }
 
 			// 选出扩展社区
 			com.extendCom(initalNode, initalNode, matrix);
 
 			// 输出隶属度数组
-			for (int i = 0; i < com.memDegree.length; i++) {
-				System.out.printf("%d = %f\n", i, com.memDegree[i]);
-			}
+			// for (int i = 0; i < com.memDegree.length; i++) {
+			// System.out.printf("%d = %f\n", i, com.memDegree[i]);
+			// }
 
 			// 处理扩展社区
 			com.extendCom_f2(initalNode, com.memDegree);
 
 			// 输出隶属度数组
-			for (int i = 0; i < com.memDegree.length; i++) {
-				System.out.printf("%d = %f\n", i, com.memDegree[i]);
-			}
+			// for (int i = 0; i < com.memDegree.length; i++) {
+			// System.out.printf("%d = %f\n", i, com.memDegree[i]);
+			// }
 
 			initalNode = com.maxValue(com.dVector);
 
 			// 输出度向量
-			System.out.println("dVector 数组:");
-			for (int i = 0; i < com.dVector.length; i++) {
-				System.out.printf("%3d", com.dVector[i]);
-			}
+			// System.out.println("dVector 数组:");
+			// for (int i = 0; i < com.dVector.length; i++) {
+			// System.out.printf("%3d", com.dVector[i]);
+			// }
 		}
 		// 合并小社区并输出结果
 		while (true) {
@@ -92,8 +97,10 @@ public class CommunitydivisionTest {
 			if (max > com.Q) {
 
 				// 如果应该合并社区，则合并社区
-				com.Result.get(cow).addAll(com.Result.get(col));
-				com.Result.get(col).clear();
+				com.Result.get(col).addAll(com.Result.get(cow));
+				com.Result.get(cow).clear();
+				com.Community.get(col).addAll(com.Community.get(cow));
+				com.Community.get(cow).clear();
 				com.Q = max;
 			} else {
 

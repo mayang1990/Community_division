@@ -18,7 +18,7 @@ public class IncrementalOfUnsigned {
 	 */
 	public float[][] qMatrix(int[][] matrix) {
 
-		admatrix.printMatrix(matrix);
+		// admatrix.printMatrix(matrix);
 
 		int totalNum = admatrix.edgeNum(matrix);
 		int pNum = admatrix.pedgeNum(matrix);
@@ -37,11 +37,10 @@ public class IncrementalOfUnsigned {
 
 		}
 
-		for (int i = 0; i < matrix.length; i++) {
-			System.out.printf("\n%f", pVector[i]);
-
-			System.out.printf("\n");
-		}
+		// for (int i = 0; i < matrix.length; i++) {
+		// System.out.printf("\n%f", pVector[i]);
+		// System.out.printf("\n");
+		// }
 
 		// 得到初始模块度矩阵
 		for (int i = 0; i < matrix.length; i++) {
@@ -90,11 +89,11 @@ public class IncrementalOfUnsigned {
 		pVector[col] = pVector[cow] + pVector[col];
 		pVector[cow] = 0;
 
-		for (int m = 0; m < matrix.length; m++) {
+		// for (int m = 0; m < matrix.length; m++) {
 
-			System.out.printf("\npVecter[%d] = %f", m, pVector[m]);
-			System.out.printf("\n");
-		}
+		// System.out.printf("\npVecter[%d] = %f", m, pVector[m]);
+		// System.out.printf("\n");
+		// }
 	}
 
 	/**

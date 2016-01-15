@@ -29,7 +29,7 @@ public class UnsignedGlobalModularity {
 		int M = admatrix.edgeNum(matrix);
 
 		// ¥Ú”°matrix
-		admatrix.printMatrix(matrix);
+		// admatrix.printMatrix(matrix);
 
 		// ¥Ú”°List
 		System.out.printf("List:\n");

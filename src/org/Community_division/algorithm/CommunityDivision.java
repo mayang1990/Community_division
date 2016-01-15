@@ -103,12 +103,13 @@ public class CommunityDivision {
 			}
 		}
 		// 输出结果
-		System.out.println("邻居社区:");
-		for (int i = 0; i < Community.size(); i++) {
-			if (!Community.get(i).isEmpty() && !Community.get(i).contains(null)) {
-				System.out.println(Community.get(i));
-			}
-		}
+		// System.out.println("邻居社区:");
+		// for (int i = 0; i < Community.size(); i++) {
+		// if (!Community.get(i).isEmpty() && !Community.get(i).contains(null))
+		// {
+		// System.out.println(Community.get(i));
+		// }
+		// }
 	}
 
 	/**
@@ -157,9 +158,9 @@ public class CommunityDivision {
 			int j = (Integer) Community.get(com).get(i);
 			if (memDegree1[j] < f1) {
 				System.out.printf("\n%d %f\n", j, memDegree1[j]);
-				System.out.println(i);
+				// System.out.println(i);
 				Community.get(com).set(i, null);
-				System.out.print(Community);
+				// System.out.print(Community);
 				memDegree1[j] = 0; // 将没有合并的社团隶属度清零
 			}
 
@@ -182,10 +183,10 @@ public class CommunityDivision {
 		// 计算合并社区的模块度增量
 		for (int i = 0; i < Community.get(com).size(); i++) {
 			if ((Integer) Community.get(com).get(i) != com) {
-				System.out.println(Community.get(com).get(i));
+				// System.out.println(Community.get(com).get(i));
 				unsigned.reqMatrix(qMatrix,
 						(Integer) Community.get(com).get(i), com);
-				unsigned.printqMatris(qMatrix);
+				// unsigned.printqMatris(qMatrix);
 			}
 		}
 
@@ -236,7 +237,7 @@ public class CommunityDivision {
 					Community.get(init).add(i);
 					System.out.println("模块度增量大于零,合并:");
 					unsigned.reqMatrix(qMatrix, i, init);
-					unsigned.printqMatris(qMatrix);
+					// unsigned.printqMatris(qMatrix);
 				}
 				System.out.println("模块度增量小于零,不合并.");
 			}
@@ -263,10 +264,10 @@ public class CommunityDivision {
 		}
 
 		// 输出Community和Result
-		System.out.println("Community:");
-		printCom(Community);
-		System.out.println("Result:");
-		printCom(Result);
+		// System.out.println("Community:");
+		// printCom(Community);
+		// System.out.println("Result:");
+		// printCom(Result);
 	}
 
 	/**
@@ -278,11 +279,12 @@ public class CommunityDivision {
 		Q = modularity.unsignedGlobalModularity(mMatrix, Result);
 		QMatrix = new float[mMatrix.length][mMatrix.length];
 
-		for (int i = 1; i < Community.size(); i++) {
-			if (!Community.get(i).isEmpty()) {
-				for (int j = i + 1; j < Community.size(); j++) {
-					if (!Community.get(j).isEmpty()) {
+		for (int i = 1; i < Result.size(); i++) {
+			if (!Result.get(i).isEmpty()) {
+				for (int j = i + 1; j < Result.size(); j++) {
+					if (!Result.get(j).isEmpty()) {
 
+						System.out.printf("\ni = %d j = %d\n", i, j);
 						// 将Ci加到Cj上
 						Community.get(j).addAll(Community.get(i));
 
