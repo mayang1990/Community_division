@@ -107,7 +107,6 @@ public class unsignedNetExcel {
 		}
 
 	}
-	
 
 	/**
 	 * 求向量的最大值以及返回最大值的坐标
@@ -278,9 +277,9 @@ public class unsignedNetExcel {
 		float q2 = ((float) 1 / (M * M)) * k;
 		float q = q1 - q2;
 
-		// System.out.printf("顶点数 = %d\n", LEN);
-		// System.out.printf("边数 = %d\n", M / 2);
-		// System.out.printf("模块度Q = %f\n", q);
+		System.out.printf("顶点数 = %d\n", LEN);
+		System.out.printf("边数 = %d\n", M / 2);
+		System.out.printf("模块度Q = %f\n", q);
 		return q;
 	}
 

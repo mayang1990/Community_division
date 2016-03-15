@@ -4,20 +4,132 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.Community_division.core.Matrix;
+import org.Communiyt_division.util.ReadFilefromExcel;
 
+/**
+ * 提出的算法雏形
+ * 
+ * @author Administrator
+ * 
+ */
 public class CommunityDivision {
 
 	int[][] mMatrix;
-	float[][] qMatrix;
-	float[][] QMatrix;
+	double[][] qMatrix;
+	double[][] QMatrix;
 
-	float[] memDegree;
+	double[] memDegree;
 	int[] dVector;
 
-	float Q;
-	float f1 = (float) 1.0 / 2; // 随便设的，根据需要调整
-	float f2 = (float) 1.0 / 3; // 随便设的，根据需要调整
+	double Q;
+	double f1 = (float) 1.0 / 2; // 随便设的，根据需要调整
+	double f2 = (float) 1.0 / 3; // 随便设的，根据需要调整
 
+	/**
+	 * main for test
+	 * 
+	 * @param args
+	 */
+	@SuppressWarnings({ "unchecked", "static-access" })
+	public static void main(String[] args) {
+		int initalNode = 0;
+
+		// ReadFilefromText readText = new ReadFilefromText();
+		// int[][] edges = readText.readLine("kong.txt");
+		// int[][] matrix = readText.adjMatrix(edges);
+
+		ReadFilefromExcel readexcel = new ReadFilefromExcel();
+		int[][] matrix = readexcel.getMatrix();
+
+		CommunityDivision com = new CommunityDivision(matrix);
+		Matrix m = new Matrix();
+		m.printMatrix(matrix);
+
+		com.dVector();
+		initalNode = com.maxValue(com.dVector);
+
+		while (initalNode > 0) {
+			com.dVector[initalNode] = 0;
+			System.out.printf("\n");
+			System.out.printf("initalNode = %d\n", initalNode);
+
+			// 选出初始社区
+			com.neighourCom(initalNode, initalNode, matrix);
+
+			// 计算出初始社区中每一个节点的隶属度，并且存储在数组memDegree中
+			com.memberDegree(initalNode, initalNode, matrix);
+
+			// 处理初始社区
+			com.initalCom_f1(initalNode, com.memDegree);
+
+			// 输出隶属度数组
+			// for (int i = 0; i < com.memDegree.length; i++) {
+			// System.out.printf("%d = %f\n", i, com.memDegree[i]);
+			// }
+
+			// 选出扩展社区
+			com.extendCom(initalNode, initalNode, matrix);
+
+			// 输出隶属度数组
+			// for (int i = 0; i < com.memDegree.length; i++) {
+			// System.out.printf("%d = %f\n", i, com.memDegree[i]);
+			// }
+
+			// 处理扩展社区
+			com.extendCom_f2(initalNode, com.memDegree);
+
+			// 输出隶属度数组
+			// for (int i = 0; i < com.memDegree.length; i++) {
+			// System.out.printf("%d = %f\n", i, com.memDegree[i]);
+			// }
+
+			// 重新选出初始节点
+			initalNode = com.maxValue(com.dVector);
+
+			// 输出度向量
+			// System.out.println("dVector 数组:");
+			// for (int i = 0; i < com.dVector.length; i++) {
+			// System.out.printf("%3d", com.dVector[i]);
+			// }
+		}
+		// 合并小社区并输出结果
+		while (true) {
+
+			// 合并社区得到全局模块度矩阵
+			com.mergeCom();
+
+			// 求合并社区后的全局模块度矩阵
+			m.maxValueforMatrixFloat(com.QMatrix);
+			double max = m.getMaxValueF();
+			int cow = m.getCowF();
+			int col = m.getColF();
+
+			// 输出最大值和它的坐标
+			System.out.printf("%f %d %d\n", max, cow, col);
+
+			if (max > com.Q) {
+
+				// 如果应该合并社区，则合并社区
+				com.Result.get(col).addAll(com.Result.get(cow));
+				com.Result.get(cow).clear();
+				com.Community.get(col).addAll(com.Community.get(cow));
+				com.Community.get(cow).clear();
+				com.Q = max;
+			} else {
+
+				// 最后输出结果
+				System.out.printf("模块度 Q = %f\n", com.Q);
+				com.printCom(com.Result);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * 社团划分的算法
+	 * 
+	 * @param matrix
+	 */
 	@SuppressWarnings("unchecked")
 	public CommunityDivision(int[][] matrix) {
 
@@ -29,7 +141,7 @@ public class CommunityDivision {
 			Result.add(i, new ArrayList<Integer>());
 
 		}
-		memDegree = new float[Community.size()];
+		memDegree = new double[Community.size()];
 	}
 
 	/**
@@ -147,21 +259,21 @@ public class CommunityDivision {
 	 * 
 	 * @param com
 	 *            社区
-	 * @param memDegree1
+	 * @param memDegree2
 	 *            隶属度数组
 	 */
 	@SuppressWarnings("unchecked")
-	public void initalCom_f1(int com, float[] memDegree1) {
+	public void initalCom_f1(int com, double[] memDegree2) {
 		qMatrix = unsigned.qMatrix(mMatrix);
 
 		for (int i = 0; i < Community.get(com).size(); i++) {
 			int j = (Integer) Community.get(com).get(i);
-			if (memDegree1[j] < f1) {
-				System.out.printf("\n%d %f\n", j, memDegree1[j]);
+			if (memDegree2[j] < f1) {
+				System.out.printf("\n%d %f\n", j, memDegree2[j]);
 				// System.out.println(i);
 				Community.get(com).set(i, null);
 				// System.out.print(Community);
-				memDegree1[j] = 0; // 将没有合并的社团隶属度清零
+				memDegree2[j] = 0; // 将没有合并的社团隶属度清零
 			}
 
 		}
@@ -227,7 +339,7 @@ public class CommunityDivision {
 	 *            隶属度数组
 	 */
 	@SuppressWarnings("unchecked")
-	public void extendCom_f2(int init, float[] memDegree2) {
+	public void extendCom_f2(int init, double[] memDegree2) {
 		for (int i = 1; i < memDegree2.length; i++) {
 			if (!Community.get(init).contains(i) && memDegree2[i] > f2) {
 				System.out.printf("节点为：%d\n", i);
@@ -277,7 +389,7 @@ public class CommunityDivision {
 	public void mergeCom() {
 
 		Q = modularity.unsignedGlobalModularity(mMatrix, Result);
-		QMatrix = new float[mMatrix.length][mMatrix.length];
+		QMatrix = new double[mMatrix.length][mMatrix.length];
 
 		for (int i = 1; i < Result.size(); i++) {
 			if (!Result.get(i).isEmpty()) {

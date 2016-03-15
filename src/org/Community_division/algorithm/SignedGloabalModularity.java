@@ -1,6 +1,7 @@
 package org.Community_division.algorithm;
 
 import org.Community_division.core.Matrix;
+import org.Communiyt_division.util.ReadFilefromText;
 
 /**
  * 
@@ -8,6 +9,21 @@ import org.Community_division.core.Matrix;
  * 
  */
 public class SignedGloabalModularity {
+
+	/**
+	 * main for test
+	 * 
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		int[][] list = { { 2, 3, 4, 1 }, { 5, 7, 6, 8, 9, 10, 11 },
+				{ 13, 14, 12, 16, 15 } };
+		ReadFilefromText readtext = new ReadFilefromText();
+		int[][] edges = readtext.readLine("Gahu.txt");
+		int[][] matrix = readtext.adjMatrix(edges);
+		SignedGloabalModularity signed = new SignedGloabalModularity();
+		signed.signedGloabalModularity(matrix, list);
+	}
 
 	/**
 	 * the global modularity of the signed net

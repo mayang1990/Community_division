@@ -2,6 +2,8 @@ package org.Communiyt_division.util;
 
 import java.io.File;
 
+import org.Community_division.core.Matrix;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -13,6 +15,17 @@ import jxl.Workbook;
  */
 public class ReadFilefromExcel {
 	static int[][] matrix = null;
+
+	/**
+	 * main for test
+	 * 
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		ReadFilefromExcel readExcel = new ReadFilefromExcel();
+		Matrix m = new Matrix();
+		m.printMatrix(readExcel.getMatrix());
+	}
 
 	public ReadFilefromExcel() {
 

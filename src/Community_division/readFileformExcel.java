@@ -6,9 +6,11 @@ import jxl.*;
 
 /**
  * 
- * @author Mayang
+ * @author Mayang unsigned network
  * 
  */
+
+// 这个文件是利用unsignedNetExcel里面的函数算的。
 
 public class readFileformExcel {
 
@@ -72,7 +74,7 @@ public class readFileformExcel {
 
 			// 处理初始社区
 			pG2.initalCom_f1(initalNode, unsignedNetExcel.memDegree);
-			
+
 			// 输出隶属度数组
 			for (int i = 0; i < unsignedNetExcel.memDegree.length; i++) {
 				System.out

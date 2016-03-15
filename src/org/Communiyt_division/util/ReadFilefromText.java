@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.Community_division.core.Matrix;
+
 /**
  * 
  * Read the adjacent matrix from text
@@ -13,6 +15,19 @@ public class ReadFilefromText {
 
 	private int[] mVexs;
 	private int[][] mMatrix; // ÁÚ½Ó¾ØÕó
+
+	/**
+	 * main for test
+	 * 
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		ReadFilefromText readText = new ReadFilefromText();
+		int[][] edges = readText.readLine("kong.txt");
+		int[][] matrix = readText.adjMatrix(edges);
+		Matrix m = new Matrix();
+		m.printMatrix(matrix);
+	}
 
 	public int[][] readLine(String path) {
 

@@ -15,7 +15,7 @@ public class Matrix {
 
 	private int maxValue = 0; // 矩阵的最大值
 	private int cow, col; // 矩阵最大值最大值对应的坐标
-	private float maxValueF = 0;
+	private double maxValueF = 0;
 	private int cowF, colF;
 
 	public int getMaxValue() {
@@ -30,7 +30,7 @@ public class Matrix {
 		return col;
 	}
 
-	public float getMaxValueF() {
+	public double getMaxValueF() {
 		return maxValueF;
 	}
 
@@ -40,6 +40,23 @@ public class Matrix {
 
 	public int getColF() {
 		return colF;
+	}
+
+	/**
+	 * main for test
+	 */
+	public static void main(String args[]) {
+		int[][] matrix = { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 2, 0, 0 },
+				{ 0, 1, 0, 0 } };
+		int[][] matrix1 = { { 1, 0, 0, 0 }, { 0, 1, 2, 0 }, { 0, 2, 0, 1 },
+				{ 0, 1, 0, 0 } };
+		Matrix m = new Matrix();
+		System.out.println(m.edgeNum(matrix));
+		m.maxValueforMatrix(matrix1);
+		System.out.println(m.getMaxValue());
+		System.out.println(m.getCow());
+		System.out.println(m.getCol());
+
 	}
 
 	/**
@@ -157,17 +174,17 @@ public class Matrix {
 	}
 
 	/**
-	 * get the max value of the float matrix
+	 * get the max value of the double float matrix
 	 * 
-	 * @param matrix
+	 * @param qMatrix
 	 *            the float matrix
 	 */
-	public void maxValueforMatrixFloat(float[][] matrix) {
+	public void maxValueforMatrixFloat(double[][] qMatrix) {
 
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = i + 1; j < matrix.length; j++) {
-				if (matrix[i][j] > maxValueF) {
-					maxValueF = matrix[i][j];
+		for (int i = 0; i < qMatrix.length; i++) {
+			for (int j = i + 1; j < qMatrix.length; j++) {
+				if (qMatrix[i][j] > maxValueF) {
+					maxValueF = qMatrix[i][j];
 					cowF = i;
 					colF = j;
 				}
